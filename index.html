@@ -5,51 +5,114 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>WaterFrost 서버 가이드</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#60a5fa;--muted:#9ca3af;--glass: rgba(255,255,255,0.03)}
-    html,body{height:100%;margin:0;font-family:Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;background:linear-gradient(180deg,#071022 0%, #07182c 60%);color:#e6eef8}
+    :root{
+      --bg:#0f1724;--accent:#60a5fa;--muted:#9ca3af;
+    }
+    html,body{
+      height:100%;margin:0;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif;
+      background:linear-gradient(180deg,#071022 0%, #07182c 60%);
+      color:#e6eef8;
+      scroll-behavior:smooth;
+    }
+
     .container{max-width:980px;margin:36px auto;padding:28px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+
+    /* 상단 헤더 */
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:60px;}
     .brand{display:flex;align-items:center;gap:14px}
-    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7dd3fc);display:flex;align-items:center;justify-content:center;color:#04263b;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .logo{
+      width:56px;height:56px;border-radius:10px;
+      background:linear-gradient(135deg,var(--accent),#7dd3fc);
+      display:flex;align-items:center;justify-content:center;
+      color:#04263b;font-weight:700;font-size:20px;
+      box-shadow:0 6px 18px rgba(2,6,23,0.6)
+    }
     h1{margin:0;font-size:22px}
     .meta{color:var(--muted);font-size:13px}
-    nav{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
-    .chip{background:var(--glass);padding:8px 12px;border-radius:8px;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;}
-    .chip:hover{background:rgba(255,255,255,0.05)}
 
-    main{margin-top:20px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 6px 20px rgba(2,6,23,0.5);transition:background 0.2s;}
-    .card:hover{background:rgba(255,255,255,0.05);}
-    .section-title h2{margin:0;font-size:16px;color:var(--accent);cursor:pointer;}
-    .card-body{cursor:pointer;}
-    .hidden-content{display:none;color:var(--muted);margin-top:8px;}
-    .card.active .hidden-content{display:block;}
+    /* 고정 네비게이션바 */
+    nav{
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      background:rgba(15,23,36,0.95);
+      backdrop-filter:blur(10px);
+      display:flex;justify-content:center;flex-wrap:wrap;
+      gap:8px;padding:10px 0;
+      box-shadow:0 2px 12px rgba(0,0,0,0.4);
+      z-index:1000;
+    }
+    .chip{
+      background:rgba(255,255,255,0.05);
+      padding:8px 14px;
+      border-radius:8px;
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+      cursor:pointer;
+      transition:background 0.2s, color 0.2s;
+    }
+    .chip:hover{
+      background:rgba(96,165,250,0.25);
+      color:white;
+    }
 
-    table{width:100%;border-collapse:collapse;margin-top:8px}
-    th,td{padding:10px 8px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);font-size:14px}
-    th{color:var(--muted);font-weight:700}
+    section{margin-top:40px}
+    section h2{color:var(--accent);font-size:18px;margin-bottom:8px}
+    ul{list-style:square;padding-left:20px;color:var(--muted)}
+    li{margin-bottom:6px}
+    footer{color:var(--muted);font-size:13px;margin-top:40px;text-align:center}
 
-    footer{color:var(--muted);font-size:13px;margin-top:18px;text-align:center}
-
-    @media (max-width:620px){.brand{flex-direction:column;align-items:flex-start}.logo{width:48px;height:48px}}
+    /* 상단 로고 부분 */
+    .top-area{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      margin-top:90px; /* 네비게이션바 높이 보정 */
+      text-align:center;
+    }
   </style>
 </head>
 <body>
-  <!-- 로고 섹션 -->
-  <!-- <div style="text-align:center; margin-top:40px;">
+
+  <!-- 상단 로고 및 모드팩 다운로드 -->
+  <div class="top-area">
     <img src="images/Server_Logo.png" alt="WaterFrost 로고"
          style="max-width:280px; width:80%; height:auto; border-radius:12px; box-shadow:0 6px 25px rgba(0,0,0,0.4);">
-  </div> -->
-  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; margin-top:40px; text-align:center;">
-  <img src="images/Server_Logo.png" alt="WaterFrost 로고"
-       style="max-width:280px; width:80%; height:auto; border-radius:12px; box-shadow:0 6px 25px rgba(0,0,0,0.4);">
-<!-- 모드팩 다운로드 링크 수정 필요 -->
-  <a href="https://drive.google.com/file/d/19ErJ1-6K_YtrLcURPuUknSAHkV4wANuS/view?usp=drive_link" target="_blank"
-     style="margin-top:18px; display:inline-block; padding:12px 26px; background:linear-gradient(135deg,#60a5fa,#3b82f6); color:white; font-weight:600; border-radius:10px; text-decoration:none; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:transform 0.15s;"
-     onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-     📦 모드팩 다운로드
-  </a>
-</div>
+
+    <a href="https://drive.google.com/file/d/1ZkWgITI-2iHoWZFF-Hw6zsT9qgYrPUMG/view?usp=drive_link" target="_blank"
+       style="margin-top:18px; display:inline-block; padding:12px 26px; background:linear-gradient(135deg,#60a5fa,#3b82f6); color:white; font-weight:600; border-radius:10px; text-decoration:none; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:transform 0.15s;"
+       onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+       📦 모드팩 다운로드
+    </a>
+
+    <!-- ⚠️ 경고문 -->
+    <p style="
+      margin-top:12px;
+      color:#f87171;
+      font-size:13px;
+      font-weight:600;
+      background:rgba(255,0,0,0.08);
+      padding:10px 16px;
+      border-radius:10px;
+      border:1px solid rgba(248,113,113,0.8);
+      display:inline-block;
+      box-shadow:0 2px 8px rgba(0,0,0,0.25);
+      line-height:1.5;
+    ">
+      ❕<span style="color:yellow;"><strong>팁:</strong></span> <span style="color:white;">모드팩 업데이트시 Server.dat, Option.txt 와 xaero 폴더를 백업하면 업데이트시 원래 세팅 그대로 플레이 가능합니다.</span>
+    </p>
+  </div>
+
+  <!-- 🔗 고정 네비게이션바 -->
+  <nav>
+    <div class="chip" onclick="location.href='#system'">0. 서버 시스템</div>
+    <div class="chip" onclick="location.href='#content'">1. 주요 컨텐츠</div>
+    <div class="chip" onclick="location.href='#other'">2. 기타 컨텐츠</div>
+    <div class="chip" onclick="location.href='#convenience'">3. 편의성 모드</div>
+  </nav>
 
   <div class="container">
     <header>
@@ -59,117 +122,61 @@
           <h1>WaterFrost 서버 가이드</h1>
           <div class="meta">
             서버 주소:
-            <strong id="serverAddress" title="클릭하면 주소가 복사됩니다" style="cursor:pointer; color:var(--accent);" onclick="copyServerAddress(event)">
+            <strong id="serverAddress" title="클릭하면 주소가 복사됩니다"
+                    style="cursor:pointer; color:var(--accent);"
+                    onclick="copyServerAddress(event)">
               WaterFrost.kro.kr
-  </strong>
-  · 버전: <strong>Minecraft 1.21.1 (NeoForge 기반)</strong>
-</div>
+            </strong>
+            · 버전: <strong>Minecraft 1.21.1 (NeoForge 기반)</strong>
+          </div>
         </div>
       </div>
       <div style="text-align:right">
         <div class="meta">서버 유형: <strong>RPG · 생활 · 경제</strong></div>
-        <div class="meta">최종 업데이트: <strong>2025-10-07</strong></div>
+        <div class="meta">최종 업데이트: <strong>2025-10-11</strong></div>
       </div>
     </header>
 
-    <nav>
-      <div class="chip" onclick="location.href='#system'">0. 서버 시스템</div>
-      <div class="chip" onclick="location.href='#content'">1. 주요 컨텐츠</div>
-      <div class="chip" onclick="location.href='#convenience'">2. 편의성 모드</div>
-      <div class="chip" onclick="location.href='#other'">3. 기타 컨텐츠</div>
-    </nav>
-
     <main>
-      <!-- 0. 서버 시스템 -->
-      <!-- <section class="card" id="system">
-        <div class="section-title">
-          <h2 onclick="window.open('https://waterfrost.kro.kr/guide/system', '_blank')">📢 0. 서버 시스템 및 공지</h2>
-        </div>
-        <div class="card-body" onclick="this.closest('.card').classList.toggle('active')">
-          <p class="lead">서버의 운영 방침과 현재 적용/예정 시스템을 한눈에 정리합니다.</p>
-          <div class="hidden-content">
-            <ul>
-              <li>스폰 내 블록 파괴 및 설치는 제한됩니다. (운영진만 예외)</li>
-              <li>유저 상점 운영 중</li>
-              <li>주식 시스템 이용 가능</li>
-              <li>낚시, 벌목, 목장, 사냥 관련 상점 업데이트 예정</li>
-            </ul>
-          </div>
-        </div>
-      </section> -->
-	  <!-- 0. 서버 시스템 -->
-<section class="card" id="system">
-  <div class="section-title">
-    <h2>📢 0. 서버 시스템 및 공지</h2>
-  </div>
-
-  <!-- 클릭해도 숨겨지지 않도록 .card-body의 onclick 제거 -->
-  <div class="card-body">
-    <p class="lead">서버의 운영 방침과 현재 적용/예정 시스템을 한눈에 정리합니다.</p>
-
-    <!-- 항상 표시되도록 hidden-content 클래스 제거 -->
-    <div style="color:var(--muted); margin-top:8px;">
-      <ul>
-        <li>스폰 내 블록 파괴 및 설치는 제한됩니다. (운영진만 예외)</li>
-        <li>유저 상점 운영 중</li>
-        <li>주식 시스템 이용 가능</li>
-        <li>낚시, 벌목, 목장, 사냥 관련 상점 업데이트 예정</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-      <!-- 1. 주요 컨텐츠 -->
-      <section class="card" id="content">
-        <div class="section-title">
-          <h2>⚔️ 1. 주요 컨텐츠 모드</h2>
-        </div>
-		
-        <div class="card-body" onclick="this.closest('.card').classList.toggle('active')">
-          <p class="lead">서버 전투/성장/생활을 책임지는 핵심 모드들입니다.</p>
-          <div class="hidden-content">
-            <ul>
-  <li><a href="https://www.youtube.com/watch?v=TjpJNuqdAj8" target="_blank" style="color:#60a5fa;"><strong>Epic Fight</strong></a> - 전투 시스템 대체, 콤보/회피/방어 추가</li>
-  <li><a href="https://www.youtube.com/watch?v=f-yN19ZQmVk" target="_blank" style="color:#60a5fa;"><strong>L'Ender Cataclysm</strong></a> - 강력한 보스와 던전 추가</li>
-  <li><a href="https://modrinth.com/mod/improvable-skills" target="_blank" style="color:#60a5fa;"><strong>Improvable Skills</strong></a> - 활동 기반 스킬 성장 시스템</li>
-  <li><a href="https://www.youtube.com/watch?v=RNrN3YnvSUk" target="_blank" style="color:#60a5fa;"><strong>Farmer's Delight</strong></a> - 요리 및 음식 버프 확장</li>
-  <li><a href="https://youtu.be/tz5maMNgWqE?si=nf-HXrY1bVkEvVDX" target="_blank" style="color:#60a5fa;"><strong>Crate</strong></a> - 수력,증기를 이용한 산업시스템 추가</li>
-</ul>
-          </div>
-        </div>
+      <section id="system">
+        <h2>📢 0. 서버 시스템 및 공지</h2>
+        <ul>
+          <li>스폰 내 블록 파괴 및 설치는 제한됩니다. (운영진만 예외)</li>
+          <li>유저 상점 운영 중</li>
+          <li>주식 시스템 이용 가능</li>
+          <li>낚시, 벌목, 목장, 사냥 관련 상점 업데이트 예정</li>
+        </ul>
       </section>
 
-<!-- 2. 기타 컨텐츠 -->
-      <section class="card" id="other">
-        <div class="section-title">
-          <h2>🌌 2. 기타 컨텐츠</h2>
-        </div>
-        <div class="card-body" onclick="this.closest('.card').classList.toggle('active')">
-          <p class="lead">서버에 추가된 기타 확장 요소들입니다.</p>
-          <div class="hidden-content">
-            <ul>
-			  <li><a href="https://voxel.hardel.io/en-us/datapacks/neoenchant" target="_blank" style="color:#60a5fa;"><strong>NeoEnchant+</strong></a> - 고급 인챈트 추가</li>
-              <li><strong>Beyond Enchant</strong> - 기본 인챈트 레벨 확장</li>
-			  <li><strong>Yghdrasil</strong> - 월드에 추가던전 생성</li>
-              <li>더 많은 모드가 업데이트 예정입니다.</li>
-            </ul>
-          </div>
-        </div>
+      <section id="content">
+        <h2>⚔️ 1. 주요 컨텐츠 모드</h2>
+        <ul>
+          <li><strong>Epic Fight</strong> - 전투 시스템 대체, 콤보/회피/방어 추가</li>
+          <li><strong>L'Ender Cataclysm</strong> - 강력한 보스와 던전 추가</li>
+          <li><strong>Improvable Skills</strong> - 활동 기반 스킬 성장 시스템</li>
+          <li><strong>Farmer's Delight</strong> - 요리 및 음식 버프 확장</li>
+          <li><strong>Create</strong> - 수력, 증기를 이용한 산업 시스템 추가</li>
+        </ul>
       </section>
-      <!-- 3. 편의성 모드 -->
-      <section class="card" id="convenience">
-        <div class="section-title">
-          <h2>🧰 3. 편의성 모드</h2>
-        </div>
-        <div class="card-body" onclick="this.closest('.card').classList.toggle('active')">
-          <p class="lead">플레이 편의성을 높여주는 모드들입니다. 클릭해서 표를 확인하세요.</p>
-          <div class="hidden-content">
-            <table>
+
+      <section id="other">
+        <h2>🌌 2. 기타 컨텐츠</h2>
+        <ul>
+          <li><strong>NeoEnchant+</strong> - 고급 인챈트 추가</li>
+          <li><strong>Beyond Enchant</strong> - 기본 인챈트 레벨 확장</li>
+          <li><strong>Yggdrasil</strong> - 월드에 추가 던전 생성</li>
+        </ul>
+      </section>
+
+      <section id="convenience">
+        <h2>🧰 3. 편의성 모드</h2>
+        <ul>
+          <table>
               <thead>
                 <tr><th>모드 이름</th><th>주요 기능</th></tr>
               </thead>
               <tbody>
-                <tr><td>JEI</td><td>모든 아이템 및 레시피 검색 아이템에 마우스를 올린후 U,R키로 사용법 또는 제작법 확인 가능 인벤토리를 열때 화면 우측에서 아이템검색후 조합법 확인 가능</td></tr>
+                <tr><td>JEI</td><td>모든 아이템 및 레시피 검색 아이템에 마우스를 올린후 U(사용법),R(제작법) 확인 가능 인벤토리 화면 우측에서 아이템검색후 조합법 확인 가능</td></tr>
                 <tr><td>Corpse</td><td>사망 시 사망위치에 시체 생성후 아이템을 시체에 보관</td></tr>
                 <tr><td>Enchantment Descriptions</td><td>인챈트 효과를 보이게 해주는 모드</td></tr>
                 <tr><td>Nature's Compass</td><td>특정 바이옴을 찾을수있게 해주는 나침반</td></tr>
@@ -191,110 +198,22 @@
 				<tr><td>Better Days</td><td>침대에서 수면하는 인원에 비례한 시간 가속기능</td></tr>
               </tbody>
             </table>
-          </div>
-        </div>
+        </ul>
       </section>
 
-      
-
       <footer>
-        이 문서는 서버 운영자/운영팀에 의해 관리됩니다. 변경사항이 생기면 본 문서를 업데이트합니다.
+        이 문서는 서버 운영자/운영팀에 의해 관리됩니다.<br>
+        변경사항이 생기면 본 문서를 업데이트합니다.
       </footer>
     </main>
   </div>
- <!-- 복사 + 툴팁 스크립트: 안정적인 복사(fallback 포함) + 요소 위 툴팁 -->
+
   <script>
     function copyServerAddress(event) {
-      event = event || window.event;
       const address = "WaterFrost.kro.kr";
-      const target = event.currentTarget || event.target;
-
-      // 툴팁 생성/표시 함수
-      function showTooltip(message) {
-        // 기존 툴팁 제거
-        const existing = document.getElementById('copyTooltip');
-        if (existing) existing.remove();
-
-        const tooltip = document.createElement('div');
-        tooltip.id = 'copyTooltip';
-        tooltip.textContent = message;
-        Object.assign(tooltip.style, {
-          position: 'absolute',
-          padding: '6px 10px',
-          borderRadius: '8px',
-          background: 'rgba(15,23,36,0.95)',
-          color: '#60a5fa',
-          fontWeight: '600',
-          fontSize: '13px',
-          pointerEvents: 'none',
-          boxShadow: '0 6px 18px rgba(2,6,23,0.6)',
-          zIndex: 2147483647,
-          opacity: '0',
-          transition: 'opacity 0.25s, transform 0.25s',
-          transform: 'translateY(0px)'
-        });
-        document.body.appendChild(tooltip);
-
-        // 위치: 요소 중앙 위 (스크롤 고려)
-        const rect = target.getBoundingClientRect();
-        const scrollX = window.scrollX || window.pageXOffset;
-        const scrollY = window.scrollY || window.pageYOffset;
-        const left = rect.left + rect.width / 2 + scrollX;
-        const top = rect.top + scrollY;
-
-        tooltip.style.left = left + 'px';
-        tooltip.style.top = (top - 8) + 'px';
-        // 가운데 정렬 + 요소 위로 살짝 올림
-        tooltip.style.transform = 'translate(-50%, -100%) translateY(-6px)';
-        tooltip.style.opacity = '1';
-
-        // 제거 타이머
-        setTimeout(() => {
-          tooltip.style.opacity = '0';
-          tooltip.style.transform = 'translate(-50%, -100%) translateY(-12px)';
-          setTimeout(() => {
-            const t = document.getElementById('copyTooltip');
-            if (t) t.remove();
-          }, 240);
-        }, 1500);
-      }
-
-      // Fallback 복사 (textarea + execCommand)
-      function fallbackCopy() {
-        try {
-          const textarea = document.createElement('textarea');
-          textarea.value = address;
-          textarea.style.position = 'fixed';
-          textarea.style.left = '-9999px';
-          textarea.style.top = '0';
-          document.body.appendChild(textarea);
-          textarea.focus();
-          textarea.select();
-          const successful = document.execCommand('copy');
-          textarea.remove();
-          if (successful) {
-            showTooltip('✅ 복사됨!');
-          } else {
-            showTooltip('⚠ 복사 실패');
-            // 최후 수단: alert로 주소 제공
-            setTimeout(() => alert('주소를 수동으로 복사하세요:\n' + address), 200);
-          }
-        } catch (err) {
-          showTooltip('⚠ 복사 불가');
-          setTimeout(() => alert('주소를 수동으로 복사하세요:\n' + address), 200);
-        }
-      }
-
-      // 우선 clipboard API 시도, 실패 시 fallback
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(address).then(() => {
-          showTooltip('✅ 복사됨!');
-        }).catch(() => {
-          fallbackCopy();
-        });
-      } else {
-        fallbackCopy();
-      }
+      navigator.clipboard.writeText(address)
+        .then(() => alert("✅ 서버 주소가 복사되었습니다!"))
+        .catch(() => alert("주소 복사 실패. 수동으로 복사하세요: " + address));
     }
   </script>
 </body>
